@@ -1,0 +1,177 @@
+.magic-bento {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.magic-bento::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.3),
+    rgba(139, 92, 246, 0.3),
+    rgba(59, 130, 246, 0.3)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Spotlight effect */
+.magic-bento.spotlight-enabled::after {
+  content: '';
+  position: absolute;
+  top: var(--spotlight-y, 0);
+  left: var(--spotlight-x, 0);
+  width: var(--spotlight-radius, 200px);
+  height: var(--spotlight-radius, 200px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  transition: top 0.3s ease, left 0.3s ease;
+}
+
+/* Border glow effect */
+.magic-bento.border-glow-enabled {
+  box-shadow: 
+    0 0 15px rgba(59, 130, 246, 0.3),
+    inset 0 0 15px rgba(59, 130, 246, 0.1);
+}
+
+/* Ripple effect */
+.magic-bento-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  transform: scale(0);
+  animation: ripple-animation 0.6s linear;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Particles */
+.magic-bento-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.magic-bento-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--glow-color, #3b82f6);
+  opacity: 0.6;
+  animation: float 6s infinite ease-in-out;
+  will-change: transform;
+}
+
+.magic-bento-particle:nth-child(odd) {
+  animation-delay: -2s;
+}
+
+.magic-bento-particle:nth-child(even) {
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(0) translateX(10px);
+  }
+  75% {
+    transform: translateY(5px) translateX(-5px);
+  }
+}
+
+/* Text auto-hide effect */
+.magic-bento.text-auto-hide:hover .auto-hide-content {
+  opacity: 1;
+}
+
+.auto-hide-content {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.auto-hide-content.show {
+  opacity: 1;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .magic-bento {
+    transition: none;
+  }
+  
+  .magic-bento::after {
+    display: none;
+  }
+  
+  .magic-bento-ripple {
+    display: none;
+  }
+  
+  .magic-bento-particle {
+    animation: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .magic-bento {
+    transform: none !important;
+  }
+  
+  .magic-bento::after {
+    display: none;
+  }
+  
+  .magic-bento-particles {
+    display: none;
+  }
+}
+
+/* Animations disabled */
+.magic-bento.animations-disabled {
+  transform: none !important;
+  transition: none;
+}
+
+.magic-bento.animations-disabled::after {
+  display: none;
+}
+
+.magic-bento.animations-disabled .magic-bento-particle {
+  display: none;
+}
